@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form with Regex Validation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input:focus {
+            border-color: #0984e3;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #0984e3;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #74b9ff;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <form id="regexForm" novalidate>
+        <h2>Sign Up</h2>
+        
+        <div class="form-group">
+            <label for="name">Name (Alphabets only):</label>
+            <input type="text" id="name" name="name" required pattern="^[a-zA-Z\s]+$" placeholder="Enter your name">
+            <div class="error" id="nameError"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" placeholder="Enter your email">
+            <div class="error" id="emailError"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password (8-16 characters, 1 uppercase, 1 digit):</label>
+            <input type="password" id="password" name="password" required pattern="^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,16}$" placeholder="Enter your password">
+            <div class="error" id="passwordError"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone Number (10 digits):</label>
+            <input type="tel" id="phone" name="phone" required pattern="^\d{10}$" placeholder="Enter your phone number">
+            <div class="error" id="phoneError"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="age">Age (18-99):</label>
+            <input type="number" id="age" name="age" required pattern="^(1[8-9]|[2-9][0-9])$" placeholder="Enter your age">
+            <div class="error" id="ageError"></div>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        const form = document.getElementById("regexForm");
+
+        form.addEventListener("submit", (e) => {
+            let isValid = true;
+
+            // Clear previous errors
+            document.querySelectorAll(".error").forEach(error => error.textContent = "");
+
+            // Validate Name
+            const name = form.name;
+            if (!name.validity.valid) {
+                document.getElementById("nameError").textContent = "Name must only contain alphabets.";
+                isValid = false;
+            }
+
+            // Validate Email
+            const email = form.email;
+            if (!email.validity.valid) {
+                document.getElementById("emailError").textContent = "Enter a valid email address.";
+                isValid = false;
+            }
+
+            // Validate Password
+            const password = form.password;
+            if (!password.validity.valid) {
+                document.getElementById("passwordError").textContent = "Password must be 8-16 characters long, with 1 uppercase and 1 digit.";
+                isValid = false;
+            }
+
+            // Validate Phone
+            const phone = form.phone;
+            if (!phone.validity.valid) {
+                document.getElementById("phoneError").textContent = "Phone number must be 10 digits.";
+                isValid = false;
+            }
+
+            // Validate Age
+            const age = form.age;
+            if (!age.validity.valid) {
+                document.getElementById("ageError").textContent = "Age must be between 18 and 99.";
+                isValid = false;
+            }
+
+            if (!isValid) {
+                e.preventDefault(); // Prevent form submission if validation fails
+            }
+        });
+    </script>
+</body>
+</html>
